@@ -4,7 +4,7 @@ Give one risk a frequency range and a loss range, simulate ten thousand years, a
 probability of any annual loss straight off an exceedance curve. Then put your own amounts on it:
 risk tolerance, loss reserve, materiality, and one line you name yourself.
 
-**Live:** https://rootcawsllc.github.io/loss-exceedance-curve/
+**Live:** https://rootcawsllc.github.io/loss-exceedance-curve/ — when to use it, how to use it, and how to take the pattern into an organisation.
 
 ![The workbench with a UK financial-services data-breach benchmark loaded. On the left, the scenario picker shows the shard's badges (GBP, its maturity status, module governed, six medium-confidence parameters), a "not good for" caveat and its six sources expanded; the frequency and loss-per-event ranges are filled in pounds. On the right, a stat strip reads no loss in the typical year, an average of a few million, and bad and very bad years above; the exceedance curve below carries three flags where the suggested tolerance, reserve and materiality lines meet it, and a decision-lines table reads the odds off for each](preview.png)
 

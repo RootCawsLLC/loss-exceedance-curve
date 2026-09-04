@@ -147,6 +147,22 @@
     .note p{font-size:14px;color:var(--ink-2);line-height:1.65}
     .notes.embedded{padding-top:8px;padding-bottom:24px}
 
+    .guide{padding:28px 0 8px}
+    .guide h2{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:28px 0 12px;padding-bottom:10px;border-bottom:1px solid var(--soft-line)}
+    .guide h2:first-of-type{margin-top:0}
+    .guide-toc{display:flex;flex-wrap:wrap;gap:.35rem .9rem;margin:0 0 18px;font-size:13px}
+    .guide-toc a{color:var(--rose)}
+    .guide-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:699px){.guide-pair{grid-template-columns:1fr}}
+    .guide-box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px}
+    .guide-box.use{border-left:3px solid var(--sage)}
+    .guide-box.dont{border-left:3px solid var(--rose)}
+    .guide-box h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 8px;letter-spacing:-.01em}
+    .guide-box ul,.guide ol{margin:0;padding-left:1.15rem}
+    .guide li{font-size:14px;color:var(--ink-2);line-height:1.65;margin:.4rem 0}
+    .guide li b{color:var(--ink);font-weight:600}
+    .guide-close{font-size:14px;color:var(--ink-2);line-height:1.65;margin:10px 0 0}
+
     @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
 </head>
@@ -624,6 +640,37 @@
         el('p',null,"This is one risk. The version that belongs in front of a board sums every risk's loss within each simulated year before sorting, which gives a portfolio curve the same lines can be read against. Correlation is the hard part of that step: three independent risks and three that tend to fire together produce very different tails from identical inputs.")));
   }
 
+  function Guide(){
+    return el('section',{className:"wrap guide","aria-label":"How to use this"},
+      el('nav',{className:"guide-toc","aria-label":"On this page"},
+        el('a',{href:"#when"},"When to use it"),
+        el('a',{href:"#how"},"How to use it"),
+        el('a',{href:"#org"},"Take it into your org")),
+      el('h2',{id:"when"},"When and where to use it"),
+      el('div',{className:"guide-pair"},
+        el('div',{className:"guide-box use"},el('h3',null,"Use it when"),
+          el('ul',null,
+            el('li',null,"A budget meeting needs the odds of a specific amount, not a colour."),
+            el('li',null,"You already have a tolerance, a reserve, or a disclosure threshold, and they have never sat on the same chart."),
+            el('li',null,"You need a sentence fit for a board paper: the annual loss reaches this amount in this share of years."))),
+        el('div',{className:"guide-box dont"},el('h3',null,"Do not use it when"),
+          el('ul',null,
+            el('li',null,"You are about to trust the far right of a ten-thousand-year PERT curve. That is the least trustworthy part of it."),
+            el('li',null,"You need a portfolio answer. This is one risk. Summing percentiles across risks is a different, larger error.")))),
+      el('h2',{id:"how"},"How to use it"),
+      el('ol',null,
+        el('li',null,el('b',null,"Estimate. "),"A three-point frequency and a three-point loss per event, typed in or loaded from a benchmark that cites its sources. Ten thousand years are simulated again every time they change."),
+        el('li',null,el('b',null,"Read the curve. "),"Any amount on the bottom axis, up to the curve, across to the odds: the share of years at least that bad on the left, one year in so many on the right."),
+        el('li',null,el('b',null,"Put your lines on it. "),"Tolerance, reserve, materiality, and one you name yourself. Each gets a probability, a plain sentence, and a reading of the reserve against the tolerance.")),
+      el('h2',{id:"org"},"Take it into your organisation"),
+      el('ol',null,
+        el('li',null,el('b',null,"Get the three numbers that already exist: "),"what you will stand, what you have reserved, what would trigger disclosure. If any of those is missing, that is the first gap, not a modelling problem."),
+        el('li',null,el('b',null,"Put them on one risk you actually carry, "),"with ranges you can defend. Take the three sentences into the next paper, with the caveat that the tail is the least trustworthy part."),
+        el('li',null,el('b',null,"The next step is a portfolio curve: "),"sum every risk inside each simulated year before you sort. Correlation is the hard part of that step, and this file will not do it."),
+        el('li',null,el('b',null,"Take the habit: "),"every amount you care about gets a probability and a sentence, or it is not yet a decision input.")),
+      el('p',{className:"guide-close"},"The notes below are the honest limits. Read them before you quote a probability off the right-hand side."));
+  }
+
   // ------------------------------------------------------------------- app
   function App(){
     const narrow=useNarrow(900);
@@ -676,6 +723,7 @@
         el('div',{className:"kicker"},"RootCaws · Risk lab"),
         el('h1',null,"Exceedance ",el('em',null,"Workbench")),
         el('p',{className:"deck"},"Turn a three-point estimate into ten thousand simulated years, then read the odds of any loss you care about straight off the curve, and see where your own tolerance, reserve and materiality lines land on it.")),
+      !EMBEDDED&&el(Guide),
       el('div',{className:"wrap bench"},
         el(Controls,{list,listErr,scenario,onScenario:chooseScenario,bm,freq,setFreq,sev,setSev,ccy,onResample:()=>setTick(t=>t+1)}),
         el('section',{"aria-label":"Results"},
