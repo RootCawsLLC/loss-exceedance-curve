@@ -145,7 +145,7 @@
     @media (max-width:899px){.notes{grid-template-columns:1fr}}
     .note h3{font-family:var(--display);font-weight:600;font-size:19px;margin-bottom:8px;letter-spacing:-.01em}
     .note p{font-size:14px;color:var(--ink-2);line-height:1.65}
-    .notes.embedded{padding-top:8px}
+    .notes.embedded{padding-top:8px;padding-bottom:24px}
 
     @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
@@ -683,6 +683,16 @@
           el(ChartPanel,{run,ccy,lines,narrow}),
           el(DecisionLines,{lines,setLines,run,ccy}))),
       el(Notes));
+  }
+
+  // Embedded in the portfolio risk lab, which is on another origin and cannot
+  // measure this document. Report the page height so the frame can fit it.
+  if(EMBEDDED){
+    let lastHeight=0;
+    const reportHeight=()=>{const h=Math.ceil(document.documentElement.getBoundingClientRect().height);if(h>0&&h!==lastHeight){lastHeight=h;window.parent.postMessage({type:"risk-lab:height",height:h},"*");}};
+    if(typeof ResizeObserver!=="undefined")new ResizeObserver(reportHeight).observe(document.body);
+    window.addEventListener("load",reportHeight);
+    setTimeout(reportHeight,0);
   }
 
   ReactDOM.createRoot(document.getElementById('root')).render(el(App));
